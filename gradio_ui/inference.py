@@ -57,31 +57,19 @@ def inference_tab():
                     visible=True,
                 )
 
-        with gr.Column(scale=2, variant="panel"):
-            with gr.Column() as upload_file:
-                local_file = gr.Audio(
-                    label="Аудио",
-                    type="filepath",
-                    show_download_button=False,
-                    show_share_button=False,
-                    interactive=True,
-                    visible=True,
-                )
+        song_input = gr.Audio(
+            label="Аудио",
+                type="filepath",
+                show_download_button=False,
+                show_share_button=False,
+                interactive=True,
+                visible=True,
+            )
 
-            with gr.Column(visible=False) as enter_local_file:
-                song_input = gr.Text(
-                    label="Путь к файлу:",
-                    info="Введите полный путь к файлу.",
-                    interactive=True,
-                    visible=True,
-                )
+            
 
             with gr.Column():
-                show_upload_button = gr.Button(
-                    value="Загрузить файл с устройства",
-                    interactive=True,
-                    visible=False,
-                )
+                
                 show_enter_button = gr.Button(
                     value="Ввести путь к файлу",
                     interactive=True,
@@ -130,13 +118,7 @@ def inference_tab():
     ) = settings()
 
     # Загрузка файлов
-    local_file.input(process_file_upload, inputs=[local_file], outputs=[song_input, local_file])
-
-    # Обновление кнопок
-    show_upload_button.click(swap_visibility, outputs=[upload_file, enter_local_file, song_input, local_file])
-    show_enter_button.click(swap_visibility, outputs=[enter_local_file, upload_file, song_input, local_file])
-    show_upload_button.click(swap_buttons, outputs=[show_upload_button, show_enter_button])
-    show_enter_button.click(swap_buttons, outputs=[show_enter_button, show_upload_button])
+    l
 
     # Обновление метода регулировки высоты тона
     autopitch.change(update_visible, inputs=autopitch, outputs=[autopitch_threshold, rvc_pitch])
