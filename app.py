@@ -35,22 +35,6 @@ OUTPUT_MESSAGE_COMPONENT = output_message()
 RUN_FROM_JUPYTER_NOTEBOOKS = colab_check() or kaggle_check()
 
 
-def check_poluvr() -> tuple[str, str, str, Any]:
-    """Проверяет, можно ли импортировать PolUVR, и возвращает данные для UI."""
-    try:
-        from PolUVR.utils import PolUVR_UI as poluvr_ui
-
-        return "UVR | PolUVR", "", "", poluvr_ui
-    except Exception:
-        return (
-            "UVR | PolUVR ⚠️",
-            "Технические чоколадки: UVR временно отдыхает.",
-            traceback.format_exc(),
-            None,
-        )
-
-
-uvr_title, uvr_message, uvr_error, PolUVR_UI = check_poluvr()
 
 
 def is_offline_mode() -> bool:
@@ -87,18 +71,7 @@ with gr.Blocks(
         with gr.Tab("TTS | Преобразование текста в речь"):
             edge_tts_tab()
 
-    with gr.Tab(uvr_title):
-        if PolUVR_UI is not None:
-            if is_offline_mode():
-                gr.HTML(
-                    "<center><h3>PolUVR не будет функционировать без подключения к интернету, если вы ранее не установили необходимые модели.</h3></center>",
-                )
-
-            PolUVR_UI("models/UVR_models", "output/UVR_output")
-        else:
-            gr.HTML(f"<center><h2>{uvr_message}</h2></center>")
-            gr.Code(value=uvr_error, language="python", interactive=False, show_label=False)
-
+    
     with gr.Tab("Загрузка моделей"):
         if not is_offline_mode():
             with gr.Tab("Загрузка RVC моделей"):
