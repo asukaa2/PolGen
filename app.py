@@ -120,9 +120,7 @@ if __name__ == "__main__":
         print(f"║{'[!] Pre-release версия':^42}║")
     print(f"╚{'═' * 42}╝\n")
 
-    if PolUVR_UI is None:
-        print("⚠️ [PolUVR] Импорт не удался, вкладка UVR будет отключена!")
-
+    
     print("Запуск интерфейса PolGen. Подождите...")
     check_and_install_models()  # Checking and installing models
 
