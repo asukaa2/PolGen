@@ -56,15 +56,15 @@ def inference_tab():
                     interactive=True,
                     visible=True,
                 )
-
-        song_input = gr.Audio(
-            label="Аудио",
-                type="filepath",
-                show_download_button=False,
-                show_share_button=False,
-                interactive=True,
-                visible=True,
-            )
+            with gr.Column():
+                song_input = gr.Audio(
+                    label="Аудио",
+                    type="filepath",
+                    show_download_button=False,
+                    show_share_button=False,
+                    interactive=True,
+                    visible=True,
+                )
 
             
 
