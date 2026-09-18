@@ -117,9 +117,7 @@ def inference_tab():
         f0_max,
     ) = settings()
 
-    # Загрузка файлов
-    l
-
+    
     # Обновление метода регулировки высоты тона
     autopitch.change(update_visible, inputs=autopitch, outputs=[autopitch_threshold, rvc_pitch])
 
