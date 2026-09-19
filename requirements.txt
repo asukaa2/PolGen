@@ -1,5 +1,5 @@
 # Интерфейс
-git+https://github.com/asukaa2/gradio1
+git+https://github.com/asukaa2/gradio
 
 # Основные ML-фреймворки
 numpy>=1.26.4
