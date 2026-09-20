@@ -1,5 +1,4 @@
-# Интерфейс
-git+https://github.com/asukaa2/gradio
+
 
 # Основные ML-фреймворки
 numpy>=1.26.4
@@ -27,3 +26,6 @@ requests
 omegaconf
 faiss-cpu
 tensorboardX
+
+# Интерфейс
+git+https://github.com/asukaa2/gradio
