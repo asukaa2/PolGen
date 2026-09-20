@@ -7,7 +7,7 @@ from typing import Any
 
 # Configuring the environment and logging
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"  # Disable unnecessary TensorFlow logs
-os.environ["GRADIO_ANALYTICS_ENABLED"] = "True"  # Disabling Gradio analytics
+os.environ["GRADIO_ANALYTICS_ENABLED"] = "False"  # Disabling Gradio analytics
 logging.basicConfig(level=logging.WARNING)  # Disable all logs, except WARNING and above
 warnings.filterwarnings("ignore")  # Disable all warnings
 
