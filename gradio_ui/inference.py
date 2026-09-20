@@ -1,5 +1,8 @@
 import gradio as gr
 
+
+import gradio as gr
+
 from gradio_ui.components.helpers import (
     OUTPUT_FORMAT,
     edge_voices,
@@ -21,13 +24,13 @@ def inference_tab():
         with gr.Column(scale=1, variant="panel"):
             with gr.Group():
                 rvc_model = gr.Dropdown(
-                    label="Голосовые модели:",
+                    label="Voice models:",
                     choices=get_folders(),
                     interactive=True,
                     visible=True,
                 )
                 ref_btn = gr.Button(
-                    value="Обновить список моделей",
+                    value="Refresh model list",
                     variant="primary",
                     interactive=True,
                     visible=True,
@@ -35,13 +38,13 @@ def inference_tab():
             with gr.Group():
                 autopitch = gr.Checkbox(
                     value=False,
-                    label="Автоматическое определение высоты тона",
+                    label="Automatic pitch detection",
                     interactive=True,
                     visible=True,
                 )
                 autopitch_threshold = gr.Radio(
                     value=155.0,
-                    choices=[("Мужская модель", 155.0), ("Женская модель", 255.0)],
+                    choices=[("Male model", 155.0), ("Female model", 255.0)],
                     show_label=False,
                     interactive=True,
                     visible=False,
@@ -51,14 +54,14 @@ def inference_tab():
                     maximum=24,
                     step=1,
                     value=0,
-                    label="Регулировка высоты тона",
-                    info="-24 — Мужская модель | 24 — Женская модель",
+                    label="Pitch adjustment",
+                    info="-24 — Male model | 24 — Female model",
                     interactive=True,
                     visible=True,
                 )
             with gr.Column():
                 song_input = gr.Audio(
-                    label="Аудио",
+                    label="Audio",
                     type="filepath",
                     show_download_button=False,
                     show_share_button=False,
@@ -71,21 +74,21 @@ def inference_tab():
             with gr.Column():
                 
                 show_enter_button = gr.Button(
-                    value="Ввести путь к файлу",
+                    value="Enter file path",
                     interactive=True,
                     visible=True,
                 )
 
     with gr.Group(), gr.Row(equal_height=True):
         generate_btn = gr.Button(
-            value="Генерировать",
+            value="Generate",
             variant="primary",
             interactive=True,
             visible=True,
             scale=2,
         )
         converted_voice = gr.Audio(
-            label="Преобразованный голос",
+            label="Converted voice",
             show_download_button=True,
             show_share_button=False,
             interactive=False,
@@ -95,13 +98,13 @@ def inference_tab():
         with gr.Column(min_width=160):
             output_format = gr.Dropdown(
                 value="mp3",
-                label="Формат файла",
+                label="File format",
                 choices=OUTPUT_FORMAT,
                 interactive=True,
                 visible=True,
             )
 
-    # Компонент настроек
+    # Settings component
     (
         f0_method,
         index_rate,
@@ -118,16 +121,16 @@ def inference_tab():
     ) = settings()
 
     
-    # Обновление метода регулировки высоты тона
+    # Update pitch adjustment method
     autopitch.change(update_visible, inputs=autopitch, outputs=[autopitch_threshold, rvc_pitch])
 
-    # Показать параметры автотюна
+    # Show autotune parameters
     autotune.change(show_autotune, inputs=autotune, outputs=[autotune_tonic, autotune_scale, autotune_strength])
 
-    # Обновление списка моделей
+    # Update model list
     ref_btn.click(update_models_list, None, outputs=rvc_model)
 
-    # Запуск процесса преобразования
+    # Start the conversion process
     generate_btn.click(
         rvc_infer,
         inputs=[
@@ -159,27 +162,27 @@ def edge_tts_tab():
         with gr.Column(variant="panel", scale=1):
             with gr.Group():
                 rvc_model = gr.Dropdown(
-                    label="Голосовые модели:",
+                    label="Voice models:",
                     choices=get_folders(),
                     interactive=True,
                     visible=True,
                 )
                 ref_btn = gr.Button(
-                    value="Обновить список моделей",
+                    value="Refresh model list",
                     variant="primary",
                     interactive=True,
                     visible=True,
                 )
             with gr.Group():
                 language = gr.Dropdown(
-                    label="Язык",
+                    label="Language",
                     choices=list(edge_voices.keys()),
                     interactive=True,
                     visible=True,
                 )
                 tts_voice = gr.Dropdown(
                     value="en-GB-SoniaNeural",
-                    label="Голос",
+                    label="Voice",
                     choices=["en-GB-SoniaNeural", "en-GB-RyanNeural"],
                     interactive=True,
                     visible=True,
@@ -188,13 +191,13 @@ def edge_tts_tab():
             with gr.Column(), gr.Group():
                 autopitch = gr.Checkbox(
                     value=False,
-                    label="Автоматическое определение высоты тона",
+                    label="Automatic pitch detection",
                     interactive=True,
                     visible=True,
                 )
                 autopitch_threshold = gr.Radio(
                     value=155.0,
-                    choices=[("Мужская модель", 155.0), ("Женская модель", 255.0)],
+                    choices=[("Male model", 155.0), ("Female model", 255.0)],
                     show_label=False,
                     interactive=True,
                     visible=False,
@@ -204,27 +207,27 @@ def edge_tts_tab():
                     maximum=24,
                     step=1,
                     value=0,
-                    label="Регулировка высоты тона",
-                    info="-24 — Мужская модель || 24 — Женская модель",
+                    label="Pitch adjustment",
+                    info="-24 — Male model || 24 — Female model",
                     interactive=True,
                     visible=True,
                 )
             synth_voice = gr.Audio(
-                label="Синтзированный TTS голос",
+                label="Synthesized TTS voice",
                 show_download_button=True,
                 show_share_button=False,
                 interactive=False,
                 visible=True,
             )
 
-    with gr.Accordion("Настройки синтеза речи", open=False), gr.Group(), gr.Row():
+    with gr.Accordion("Speech synthesis settings", open=False), gr.Group(), gr.Row():
         tts_pitch = gr.Slider(
             minimum=-100,
             maximum=100,
             step=1,
             value=0,
-            label="Регулировка высоты тона TTS",
-            info="-100 - мужской голос || 100 - женский голос",
+            label="TTS pitch adjustment",
+            info="-100 - male voice || 100 - female voice",
             interactive=True,
             visible=True,
         )
@@ -233,8 +236,8 @@ def edge_tts_tab():
             maximum=100,
             step=1,
             value=0,
-            label="Громкость речи",
-            info="Громкость воспроизведения синтеза речи",
+            label="Speech volume",
+            info="Speech synthesis playback volume",
             interactive=True,
             visible=True,
         )
@@ -243,24 +246,24 @@ def edge_tts_tab():
             maximum=100,
             step=1,
             value=0,
-            label="Скорость речи",
-            info="Скорость воспроизведения синтеза речи",
+            label="Speech rate",
+            info="Speech synthesis playback rate",
             interactive=True,
             visible=True,
         )
 
-    tts_text = gr.Textbox(label="Введите текст", lines=5)
+    tts_text = gr.Textbox(label="Enter text", lines=5)
 
     with gr.Group(), gr.Row(equal_height=True):
         generate_btn = gr.Button(
-            value="Генерировать",
+            value="Generate",
             variant="primary",
             interactive=True,
             visible=True,
             scale=2,
         )
         converted_synth_voice = gr.Audio(
-            label="Преобразованный TTS голос",
+            label="Converted TTS voice",
             show_download_button=True,
             show_share_button=False,
             interactive=False,
@@ -270,13 +273,13 @@ def edge_tts_tab():
         with gr.Column(min_width=160):
             output_format = gr.Dropdown(
                 value="mp3",
-                label="Формат файла",
+                label="File format",
                 choices=OUTPUT_FORMAT,
                 interactive=True,
                 visible=True,
             )
 
-    # Компонент настроек
+    # Settings component
     (
         f0_method,
         index_rate,
@@ -292,19 +295,19 @@ def edge_tts_tab():
         f0_max,
     ) = settings()
 
-    # Обновление списка TTS-голосов
+    # Update TTS voice list
     language.change(update_edge_voices, inputs=language, outputs=tts_voice)
 
-    # Обновление метода регулировки высоты тона
+    # Update pitch adjustment method
     autopitch.change(update_visible, inputs=autopitch, outputs=[autopitch_threshold, rvc_pitch])
 
-    # Показать параметры автотюна
+    # Show autotune parameters
     autotune.change(show_autotune, inputs=autotune, outputs=[autotune_tonic, autotune_scale, autotune_strength])
 
-    # Обновление списка моделей
+    # Update model list
     ref_btn.click(update_models_list, None, outputs=rvc_model)
 
-    # Запуск процесса преобразования
+    # Start the conversion process
     generate_btn.click(
         rvc_edgetts_infer,
         inputs=[
