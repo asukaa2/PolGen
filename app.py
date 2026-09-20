@@ -90,7 +90,7 @@ with gr.Blocks(
 
 PolGen.launch(
     favicon_path="assets/logo.ico",
-    enable_queue=True,
+    enable_queue=False,
     share=True,
 )
 
