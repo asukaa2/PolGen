@@ -1,8 +1,5 @@
 import gradio as gr
 
-
-import gradio as gr
-
 from gradio_ui.components.helpers import (
     OUTPUT_FORMAT,
     edge_voices,
@@ -33,51 +30,48 @@ def inference_tab():
             interactive=True,
             visible=True,
         )
-            with gr.Group():
-                autopitch = gr.Checkbox(
-                    value=False,
-                    label="Automatic pitch detection",
-                    interactive=True,
-                    visible=True,
-                )
-                autopitch_threshold = gr.Radio(
-                    value=155.0,
-                    choices=[("Male model", 155.0), ("Female model", 255.0)],
-                    show_label=False,
-                    interactive=True,
-                    visible=False,
-                )
-                rvc_pitch = gr.Slider(
-                    minimum=-24,
-                    maximum=24,
-                    step=1,
-                    value=0,
-                    label="Pitch adjustment",
-                    info="-24 — Male model | 24 — Female model",
-                    interactive=True,
-                    visible=True,
-                )
-            with gr.Column():
-                song_input = gr.Audio(
-                    label="Audio",
-                    type="filepath",
-                    show_download_button=False,
-                    show_share_button=False,
-                    interactive=True,
-                    visible=True,
-                )
+        with gr.Group():
+            autopitch = gr.Checkbox(
+                value=False,
+                label="Automatic pitch detection",
+                interactive=True,
+                visible=True,
+            )
+            autopitch_threshold = gr.Radio(
+                value=155.0,
+                choices=[("Male model", 155.0), ("Female model", 255.0)],
+                show_label=False,
+                interactive=True,
+                visible=False,
+            )
+            rvc_pitch = gr.Slider(
+                minimum=-24,
+                maximum=24,
+                step=1,
+                value=0,
+                label="Pitch adjustment",
+                info="-24 — Male model | 24 — Female model",
+                interactive=True,
+                visible=True,
+            )
+        with gr.Column():
+            song_input = gr.Audio(
+                label="Audio",
+                type="filepath",
+                show_download_button=False,
+                show_share_button=False,
+                interactive=True,
+                visible=True,
+            )
 
-            
+        with gr.Column():
+            show_enter_button = gr.Button(
+                value="Enter file path",
+                interactive=True,
+                visible=True,
+            )
 
-            with gr.Column():
-                
-                show_enter_button = gr.Button(
-                    value="Enter file path",
-                    interactive=True,
-                    visible=True,
-                )
-
-    with gr.Group(), gr.Row(equal_height=True):
+    with gr.Row(equal_height=True):
         generate_btn = gr.Button(
             value="Generate",
             variant="primary",
@@ -118,7 +112,6 @@ def inference_tab():
         f0_max,
     ) = settings()
 
-    
     # Update pitch adjustment method
     autopitch.change(update_visible, inputs=autopitch, outputs=[autopitch_threshold, rvc_pitch])
 
@@ -252,7 +245,7 @@ def edge_tts_tab():
 
     tts_text = gr.Textbox(label="Enter text", lines=5)
 
-    with gr.Group(), gr.Row(equal_height=True):
+    with gr.Row(equal_height=True):
         generate_btn = gr.Button(
             value="Generate",
             variant="primary",
