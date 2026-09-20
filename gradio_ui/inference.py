@@ -21,20 +21,18 @@ from rvc.infer.infer import rvc_edgetts_infer, rvc_infer
 
 def inference_tab():
     with gr.Row():
-        with gr.Column(scale=1, variant="panel"):
-            with gr.Group():
-                rvc_model = gr.Dropdown(
-                    label="Voice models:",
-                    choices=get_folders(),
-                    interactive=True,
-                    visible=True,
-                )
-                ref_btn = gr.Button(
-                    value="Refresh model list",
-                    variant="primary",
-                    interactive=True,
-                    visible=True,
-                )
+        rvc_model = gr.Dropdown(
+            label="Voice models:",
+            choices=get_folders(),
+            interactive=True,
+            visible=True,
+        )
+        ref_btn = gr.Button(
+            value="Refresh model list",
+            variant="primary",
+            interactive=True,
+            visible=True,
+        )
             with gr.Group():
                 autopitch = gr.Checkbox(
                     value=False,
