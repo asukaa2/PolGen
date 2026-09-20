@@ -53,7 +53,7 @@ def get_title() -> str:
 with gr.Blocks(
     title=get_title(),
     css="footer{display:none !important}",
-    theme=gr.themes.Soft(
+    theme=gr.themes.Base(
         primary_hue="green",
         secondary_hue="green",
         neutral_hue="neutral",
@@ -89,48 +89,9 @@ with gr.Blocks(
                 OUTPUT_MESSAGE_COMPONENT.render()
 
 
-def launch_gradio(server_name: str, server_port: int) -> None:
-    PolGen.launch(
-        favicon_path="assets/logo.ico",
-        inbrowser=not RUN_FROM_JUPYTER_NOTEBOOKS,
-        share=RUN_FROM_JUPYTER_NOTEBOOKS and ("--no-share" not in sys.argv),
-        server_name=server_name,
-        server_port=server_port,
-    )
+PolGen.launch(
+    favicon_path="assets/logo.ico",
+    share=True,
+)
 
 
-def get_value_from_args(key: str, default: Any = None) -> Any:
-    if key in sys.argv:
-        index = sys.argv.index(key) + 1
-        if index < len(sys.argv):
-            return sys.argv[index]
-    return default
-
-
-if __name__ == "__main__":
-    print("Среда запуска: ", "Jupyter Notebook" if RUN_FROM_JUPYTER_NOTEBOOKS else "LocalHost")
-
-    # Красивый вывод версии
-    print(f"\n╔{'═' * 42}╗")
-    print(f"║{'PolGen v' + __version__:^42}║")
-    if __version_info__["is_prerelease"]:
-        print(f"║{'[!] Pre-release версия':^42}║")
-    print(f"╚{'═' * 42}╝\n")
-
-    
-    print("Запуск интерфейса PolGen. Подождите...")
-    check_and_install_models()  # Checking and installing models
-
-    port = int(get_value_from_args("--port", DEFAULT_PORT))
-    server = get_value_from_args("--server-name", DEFAULT_SERVER_NAME)
-
-    for _ in range(MAX_PORT_ATTEMPTS):
-        try:
-            launch_gradio(server, port)
-            break
-        except OSError:
-            print(f"Не удалось запустить на порту {port}, повторите попытку на порту {port - 1}...")
-            port -= 1
-        except Exception as error:
-            print(f"Произошла ошибка при запуске Gradio: {error}")
-            break
