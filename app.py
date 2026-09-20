@@ -96,8 +96,6 @@ def launch_gradio(server_name: str, server_port: int) -> None:
         share=RUN_FROM_JUPYTER_NOTEBOOKS and ("--no-share" not in sys.argv),
         server_name=server_name,
         server_port=server_port,
-        show_error=True,
-        debug=True,
     )
 
 
